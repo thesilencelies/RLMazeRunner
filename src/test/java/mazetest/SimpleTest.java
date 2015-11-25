@@ -1,13 +1,13 @@
 package mazetest;
 
-import mr.maze.RLmazeAgent;
+import mr.maze.NNRLmazeAgent;
 
 public class SimpleTest {
 	
 	public static void main(String [ ] args)
 	{
 		int[]l = new int[4];		
-		RLmazeAgent agent = new RLmazeAgent(0.1,0.99);
+		NNRLmazeAgent agent = new NNRLmazeAgent(0.1,0.99);
 	     agent.runonce(true);
 	     float x =0;
 	     if(args.length > 0){
