@@ -47,8 +47,8 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	private float err;
 	private float gamma;
 	
-	public NNRLmazeAgent (double d, double e){
-		super();
+	public NNRLmazeAgent (Maze _m, double d, double e){
+		super(_m);
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
 		nnchoice = NNFactory.mlpSigmoid(new int []{40, 41, 4},true);//,new ConnectionCalculatorFullyConnected());
