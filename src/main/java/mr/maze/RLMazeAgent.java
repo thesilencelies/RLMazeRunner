@@ -12,9 +12,12 @@ public abstract class RLMazeAgent {
 	protected Maze m;
 	protected Position mypos;
 	
-	public RLMazeAgent(){
+	public RLMazeAgent(int x, int y, int npits, int nwalls, boolean warpwalls){
 		mypos = new Position();
-		m = new Maze(20,20,1,5, true);
+		m = new Maze(x,y,npits,nwalls, warpwalls);
+	}
+	public RLMazeAgent(Maze _m){
+		m = _m;
 	}
 	
 	public void load(Path mazep, Path datapath){
