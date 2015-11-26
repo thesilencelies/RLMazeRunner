@@ -9,8 +9,8 @@ public class TabularRLAgent extends RLMazeAgent{
 
 	private TabularData data;
 	
-	public TabularRLAgent(float learningparam1, RLType rtype, LearningParadigm lp){
-		super();
+	public TabularRLAgent(Maze _m, float learningparam1, RLType rtype, LearningParadigm lp){
+		super(_m);
 		data = new TabularData(m.getmaxc());
 	}
 	@Override
