@@ -47,17 +47,14 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	private float err;
 	private float gamma;
 	
-	public NNRLmazeAgent (Maze _m, double d, double e){
-		super(_m);
+	public NNRLmazeAgent (Maze _m, double d, double e, double a){
+		super(_m,d,e,a);
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
 		nnchoice = NNFactory.mlpSigmoid(new int []{40, 41, 4},true);//,new ConnectionCalculatorFullyConnected());
 		//nnmem = NNFactory.mlpSigmoid(new int []{41, 4},true);
 		mycsprov = new MazeProvider(mypos.getloc());
 		oe = new MultipleNeuronsOutputError();
-		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(-0.01f, 0.01f)), 0.02f, 0.5f, 0f, 0f,0,1,1,1);
-		err = (float)d;
-		gamma = (float) e;
 		results = TensorFactory.tensorProvider(nnchoice,1, Environment.getInstance().getUseDataSharedMemory());
 		calculatedLayers  = new UniqueList();
 	}
@@ -90,7 +87,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 
 	}
 	
-	protected Matrix peekchoice(Point loc){
+	protected float peekchoice(Point loc){
 		
 		input = new MazeData(loc);
 		//create the necessary machinery (is there a more efficient place to create these objects?
@@ -98,7 +95,14 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		calculatedLayers.add(nnchoice.getInputLayer());
 		//produce the results 
 		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
-		return results.get(nnchoice.getOutputLayer());
+		Matrix peek = results.get(nnchoice.getOutputLayer());
+		float val = peek.get(0,0);
+		for (float v : peek.getElements()){
+			if(v > val){
+				val = v;
+			}
+		}
+		return val;
 	}
 
 	public float runonce(boolean talkback){
@@ -156,18 +160,13 @@ public class NNRLmazeAgent extends RLMazeAgent{
 			float val = 0;
 			//clamp terminal states to their reward
 			if(!m.isTermPos(mypos.getloc())){
-				Matrix peek = peekchoice(mypos.getloc());
-				val = peek.get(0,0);
-				for (float v : peek.getElements()){
-					if(v > val){
-						val = v;
-					}
-				}
+				val = peekchoice(mypos.getloc());
+				
 				if(talkback){
 					System.out.println("the new max Q value is " + val);
 				}
 			}
-			target[a.ind] = reward + gamma*val;
+			target[a.ind] = target[a.ind] + (float)(alpha*(reward + gamma*val) - target[a.ind]);
 			mycsprov.setTarget(target);
 			bpt.train();
 		}

@@ -11,13 +11,23 @@ import mr.mazeImpl.Position;
 public abstract class RLMazeAgent {
 	protected Maze m;
 	protected Position mypos;
+	protected double err;
+	protected double gamma;
+	public double alpha;
 	
-	public RLMazeAgent(int x, int y, int npits, int nwalls, boolean warpwalls){
+	public RLMazeAgent(int x, int y, int npits, int nwalls, boolean warpwalls, double _err, double _gamma, double _alpha){
 		mypos = new Position();
-		m = new Maze(x,y,npits,nwalls, warpwalls);
+		m = new Maze(x,y,npits,nwalls, warpwalls, true);
+		err = _err;
+		gamma = _gamma;
+		alpha = _alpha;
 	}
-	public RLMazeAgent(Maze _m){
+	public RLMazeAgent(Maze _m, double _err, double _gamma, double _alpha){
+		mypos = new Position();
 		m = _m;
+		err = _err;
+		gamma = _gamma;
+		alpha = _alpha;
 	}
 	
 	public void load(Path mazep, Path datapath){
@@ -26,8 +36,14 @@ public abstract class RLMazeAgent {
 	public void save(Path mazep, Path datapath){
 		m.save(mazep);
 	}
-	
-	protected abstract Matrix peekchoice(Point loc);
+	//function to allow simulated annealing to be implimented
+	public void setepsilon(double _eps){
+		err = _eps;
+	}
+	public double getepsilon(){
+		return err;
+	}
+	protected abstract float peekchoice(Point loc);
 	
 	public abstract float runonce(boolean talkback);
 	
@@ -36,14 +52,7 @@ public abstract class RLMazeAgent {
 		double [][] netvals = new double[21][21];
 		for (int i =0; i < 21; i ++){
 			for (int j =0; j < 21; j++){
-				Matrix peek = peekchoice(new Point(i,j));
-				double val = peek.get(0,0);
-				for (float v : peek.getElements()){
-					if(v > val){
-						val = v;
-					}
-				}
-				netvals[i][j] = val;
+				netvals[i][j] = peekchoice(new Point(i,j));
 			}
 		}
 		for (int i =0; i < 21; i++){

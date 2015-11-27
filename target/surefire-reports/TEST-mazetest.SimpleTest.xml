@@ -5,7 +5,7 @@
     <property name="sun.boot.library.path" value="/usr/lib/java/jdk1.8.0_65/jre/lib/amd64"/>
     <property name="java.vm.version" value="25.65-b01"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="/home/stephen/workspace/Maze_Runner"/>
+    <property name="maven.multiModuleProjectDirectory" value="/opt/eclipse/${workspace_loc:/Maze_Runner}"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/home/stephen/workspace/Maze_Runner"/>
+    <property name="user.dir" value="/home/stephen/workspace/Maze_Runner/RLMazeRunner"/>
     <property name="java.runtime.version" value="1.8.0_65-b17"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/usr/lib/java/jdk1.8.0_65/jre/lib/endorsed"/>
@@ -24,7 +24,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="classworlds.conf" value="/home/stephen/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf5198912933761256208.tmp"/>
+    <property name="classworlds.conf" value="/home/stephen/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf2687342825387498073.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -51,7 +51,7 @@
     <property name="securerandom.source" value="file:/dev/./urandom"/>
     <property name="sun.boot.class.path" value="/usr/lib/java/jdk1.8.0_65/jre/lib/resources.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/rt.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/sunrsasign.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/jsse.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/jce.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/charsets.jar:/usr/lib/java/jdk1.8.0_65/jre/lib/jfr.jar:/usr/lib/java/jdk1.8.0_65/jre/classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="/home/stephen/workspace/Maze_Runner/EMBEDDED"/>
+    <property name="maven.home" value="/home/stephen/workspace/Maze_Runner/RLMazeRunner/EMBEDDED"/>
     <property name="file.separator" value="/"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>

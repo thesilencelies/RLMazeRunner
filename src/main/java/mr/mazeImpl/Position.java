@@ -6,6 +6,9 @@ public class Position {
 	public Position(){
 		loc = new Point(0,0);
 	}
+	public Position(Point _loc){
+		loc = new Point(_loc);
+	}
 	
 	private Point loc;
 	

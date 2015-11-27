@@ -13,14 +13,16 @@ import java.io.IOException;
 
 public class Maze {
 	private boolean _warpwalls;
+	private boolean penlife;
 	private Point maxc;
 	private Point goal;
 	private List<Point> pits;
 	private List<Point> walls;
 	
 	
-	public Maze(int dimx, int dimy, int npits, int nwalls, boolean warpwalls){	//these must not be larger than 255
+	public Maze(int dimx, int dimy, int npits, int nwalls, boolean warpwalls, boolean penaliselife){	//these must not be larger than 255
 		_warpwalls = warpwalls;
+		penlife = penaliselife;
 		pits = new ArrayList<Point>();
 		walls = new ArrayList<Point>();
 		//randomly populate the maze
@@ -178,7 +180,8 @@ public class Maze {
 				return -1;
 			}
 			else{
-				return -0.001f;
+				if(penlife)	return -0.001f;
+				else return 0;
 			}
 		}
 	}
