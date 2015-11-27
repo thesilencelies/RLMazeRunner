@@ -15,6 +15,7 @@ import com.github.neuralnetworks.tensor.TensorFactory;
 import com.github.neuralnetworks.training.TrainerFactory;
 import com.github.neuralnetworks.training.TrainingInputData;
 import com.github.neuralnetworks.training.TrainingInputDataImpl;
+import com.github.neuralnetworks.training.TrainingInputProvider;
 import com.github.neuralnetworks.training.backpropagation.BackPropagationTrainer;
 import com.github.neuralnetworks.training.random.MersenneTwisterRandomInitializer;
 import com.github.neuralnetworks.training.random.NNRandomInitializer;
@@ -44,11 +45,10 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	private 		ValuesProvider results;
 	private 	    Set<Layer> calculatedLayers;
 	
-	private float err;
 	private float gamma;
 	
-	public NNRLmazeAgent (Maze _m, double d, double e, double a){
-		super(_m,d,e,a);
+	public NNRLmazeAgent (Maze _m, double epsilon, double gamma, double alpha){
+		super(_m,epsilon,gamma,alpha);
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
 		nnchoice = NNFactory.mlpSigmoid(new int []{40, 41, 4},true);//,new ConnectionCalculatorFullyConnected());
@@ -57,6 +57,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		oe = new MultipleNeuronsOutputError();
 		results = TensorFactory.tensorProvider(nnchoice,1, Environment.getInstance().getUseDataSharedMemory());
 		calculatedLayers  = new UniqueList();
+		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0.1f,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
 	}
 	@Override
 	public void load(Path mazep, Path nnp){

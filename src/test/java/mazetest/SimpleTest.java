@@ -9,7 +9,7 @@ public class SimpleTest {
 	public static void main(String [ ] args)
 	{	
 		RLMazeAgent agent;
-		Maze m = new Maze(20,20,8,2,false, true);
+		Maze m = new Maze(20,20,8,2,true, true);
 		if (args.length == 0){
 		agent = new NNRLmazeAgent(m,0.1,0.99,0.5);
 		}
