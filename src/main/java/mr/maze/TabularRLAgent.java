@@ -144,6 +144,11 @@ public class TabularRLAgent extends RLMazeAgent{
 			}
 			//assess new state and update previous
 			data = upd.nextStepUpdate(data, a, prevpos,a, mypos, reward);
+			if(steps >40000){
+				//kill the episode if it's clearly stuck
+				reward = -2;
+				break;
+			}
 		}
 		data = upd.episodeEndUpdate(data, totalReward);
 		System.out.println("reward was " + totalReward + " after " + steps + " steps");
@@ -177,8 +182,13 @@ public class TabularRLAgent extends RLMazeAgent{
 				
 				data = upd.nextStepUpdate(data, a, prevpos,b, mypos, reward);
 				a = b;
+				if(steps >40000){
+					//kill the episode if it's clearly stuck
+					reward = -2;
+					break;
+				}
 			}
-		
+		data = upd.episodeEndUpdate(data, totalReward);
 		System.out.println("reward was " + totalReward + " after " + steps + " steps");
 		return totalReward;
 	}

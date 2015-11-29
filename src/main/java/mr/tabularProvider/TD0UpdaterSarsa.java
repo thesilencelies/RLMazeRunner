@@ -20,7 +20,6 @@ public class TD0UpdaterSarsa implements RLUpdater {
 
 	@Override
 	public TabularData episodeEndUpdate(TabularData d, double totalreward) {
-		System.out.println("this method should not be called for TDOSarsa");
 		return d;
 	}
 

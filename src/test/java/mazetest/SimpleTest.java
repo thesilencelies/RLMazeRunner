@@ -1,5 +1,9 @@
 package mazetest;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import mr.maze.*;
 import mr.tabularProvider.*;
 import mr.mazeImpl.Maze;
@@ -9,7 +13,14 @@ public class SimpleTest {
 	public static void main(String [ ] args)
 	{	
 		RLMazeAgent agent;
-		Maze m = new Maze(20,20,8,2,true, true);
+		Maze m;
+		Path mpath = Paths.get("C:/Users/Stephen Lilico/Documents/Programming/Java/RLMazeRunner/maze.mz");
+		try{
+		m = new Maze(mpath);
+		}catch(IOException e){
+			m = new Maze(30,30,6,2,false,true);
+			m.save(mpath);
+		}
 		if (args.length == 0){
 		agent = new NNRLmazeAgent(m,0.1,0.99,0.5);
 		}
@@ -24,8 +35,14 @@ public class SimpleTest {
 				case "TDL":
 					agent = new TabularRLAgent(m, 0.6f,RLType.TDlambda, LearningParadigm.Sarsa, 0.1,0.99);
 					break;
+				case "TDLQ":
+					agent = new TabularRLAgent(m, 0.6f,RLType.TDlambda, LearningParadigm.Qlearning, 0.1,0.99);
+					break;
 				case "Q":
 					agent = new TabularRLAgent(m, 0.6f,RLType.TD0, LearningParadigm.Qlearning, 0.1,0.99);
+					break;
+				case "MC":
+					agent = new TabularRLAgent(m,0.6f,RLType.MonteCarlo,LearningParadigm.Qlearning,0.1,.99);
 					break;
 				default:
 					System.out.println("unrecognised input - accepted types are NN or TD followed by the number of iterations");
@@ -41,8 +58,8 @@ public class SimpleTest {
 	    		 x += rot[i];
 	    		 agent.displaynet();
 	    		 //simulated annealing
-	    		 if(i > 80){
-	    			 agent.setepsilon(agent.getepsilon()*0.9);
+	    		 if(i > 80 ){
+	    			 agent.setepsilon(Double.max(0.01,agent.getepsilon()*0.9));
 	    		 }
 	    		 
 	    	 }

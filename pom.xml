@@ -7,13 +7,6 @@
   <description>simple maze solving RL agent</description>
   <dependencies>
   	<dependency>
-  		<groupId>com.github.neuralnetworks</groupId>
-  		<artifactId>nn-core</artifactId>
-  		<scope>system</scope>
-  		<systemPath>/home/stephen/4yp/emulator/LearnForge/forge/neuralnetworks/nn-core/target/nn-core-0.1-SNAPSHOT.jar</systemPath>
-  		<version>0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
   		<groupId>com.github</groupId>
   		<artifactId>neuralnetworks</artifactId>
   		<version>0.1-SNAPSHOT</version>
@@ -24,7 +17,12 @@
   		<artifactId>aparapi</artifactId>
   		<version>0.1-SNAPSHOT</version>
   		<scope>system</scope>
-  		<systemPath>/home/stephen/4yp/Aparapi_2013_01_23_linux_x86_64/aparapi.jar</systemPath>
+  		<systemPath>C:\Users\Stephen Lilico\Documents\Programming\Java\neuralnetworks\neuralnetworks\nn-core\lib\aparapi.jar</systemPath>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.github.neuralnetworks</groupId>
+  		<artifactId>nn-core</artifactId>
+  		<version>0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
     <build>

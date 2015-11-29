@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 public class Maze {
-	private boolean _warpwalls;
+	private boolean warpwalls;
 	private boolean penlife;
 	private Point maxc;
 	private Point goal;
@@ -20,8 +20,8 @@ public class Maze {
 	private List<Point> walls;
 	
 	
-	public Maze(int dimx, int dimy, int npits, int nwalls, boolean warpwalls, boolean penaliselife){	//these must not be larger than 255
-		_warpwalls = warpwalls;
+	public Maze(int dimx, int dimy, int npits, int nwalls, boolean _warpwalls, boolean penaliselife){	//these must not be larger than 255
+		warpwalls = _warpwalls;
 		penlife = penaliselife;
 		pits = new ArrayList<Point>();
 		walls = new ArrayList<Point>();
@@ -38,7 +38,7 @@ public class Maze {
 			goal = new Point(ThreadLocalRandom.current().nextInt(1, dimx + 1),ThreadLocalRandom.current().nextInt(1, dimy + 1));
 		}
 	}
-	public Maze(Path p){
+	public Maze(Path p) throws IOException{
 		//loads the maze from a file
 		byte[] fileArray;
 		try{
@@ -47,29 +47,35 @@ public class Maze {
 		int nwalls = fileArray[1];
 		maxc = new Point(fileArray[2],fileArray[3]);
 		goal = new Point(fileArray[4],fileArray[5]);
+		warpwalls = fileArray[6] == 1;
+		penlife = fileArray[7] ==1;
+		pits = new ArrayList<Point>();
 		for(int i = 0; i < npits; i++){
-			pits.add(new Point(fileArray[6+(2*i)],fileArray[7+(2*i)]));
+			pits.add(new Point(fileArray[8+(2*i)],fileArray[9+(2*i)]));
 		}
+		walls = new ArrayList<Point>();
 		for(int i = npits; i < nwalls+npits; i++){
-			walls.add(new Point(fileArray[6+(2*i)],fileArray[7+(2*i)]));
+			walls.add(new Point(fileArray[8+(2*i)],fileArray[9+(2*i)]));
 		}
 		}
 		catch(IOException e){
-			e.printStackTrace();
+			throw e;
 		}
 	}
 	
 	
 	public void save(Path p){
-		byte[] buf = new byte [6 + 2*(pits.size() + walls.size())];
+		byte[] buf = new byte [8 + 2*(pits.size() + walls.size())];
 		buf[0] = (byte) pits.size();
 		buf[1] = (byte) walls.size();
 		buf[2] = (byte) maxc.getX();
 		buf[3] = (byte) maxc.getY();
 		buf[4] = (byte) goal.getX();
 		buf[5] = (byte) goal.getY();
+		buf[6] = (byte) ((warpwalls)? 1:0);
+		buf[7] = (byte) ((penlife)? 1:0);
 		Iterator<Point> it = pits.iterator();
-		int i = 6;
+		int i = 8;
 		while(it.hasNext()){
 			Point x = it.next();
 			buf[i] = (byte) x.getX();
@@ -95,7 +101,7 @@ public class Maze {
 	}
 
 	public Point goresult(Action a, Point p){
-		if (_warpwalls){
+		if (warpwalls){
 			return warpstep(a,p);
 		}
 		else{

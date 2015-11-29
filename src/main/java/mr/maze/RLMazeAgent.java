@@ -1,6 +1,7 @@
 package mr.maze;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.nio.file.Path;
 
 import com.github.neuralnetworks.tensor.Matrix;
@@ -30,7 +31,7 @@ public abstract class RLMazeAgent {
 		alpha = _alpha;
 	}
 	
-	public void load(Path mazep, Path datapath){
+	public void load(Path mazep, Path datapath) throws IOException{
 		m = new Maze(mazep);
 	}
 	public void save(Path mazep, Path datapath){
