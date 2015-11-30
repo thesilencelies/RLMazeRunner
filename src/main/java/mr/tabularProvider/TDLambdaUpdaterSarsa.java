@@ -55,6 +55,7 @@ public class TDLambdaUpdaterSarsa implements RLUpdater {
 
 	@Override
 	public TabularData episodeEndUpdate(TabularData d, double totalreward) {
+		trace.clear();
 		return d;
 	}
 	

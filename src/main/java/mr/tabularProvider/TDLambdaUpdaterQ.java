@@ -24,6 +24,7 @@ public class TDLambdaUpdaterQ implements RLUpdater{
 			//this will function like the super naieve combination of peng's and watkin's Q(l) suggested in reinforcement learning: an introduction
 			//it's basically just watkins, but without cutting off learning after a non-greedy action
 			//if the non-greedy actions are sufficiently annealed, this should work
+			//it also doesn't work
 			Point loc = p2.getloc();
 			float val = d.Q[loc.x][loc.y][0];
 			for (int i = 1; i < 4; i++){
@@ -63,7 +64,7 @@ public class TDLambdaUpdaterQ implements RLUpdater{
 		}
 		@Override
 		public TabularData episodeEndUpdate(TabularData d, double totalreward) {
-			// TODO Auto-generated method stub
+			trace.clear();
 			return d;
 		}
 }

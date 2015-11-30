@@ -46,6 +46,7 @@ public class MonteCarloUpdater implements RLUpdater {
 				R += arr[len - i].et;
 				d.Q[arr[len-i].a][arr[len-i].b][arr[len-i].c] = (float)R/(i);
 			}
+			trace.clear();
 			return d;
 		}
 

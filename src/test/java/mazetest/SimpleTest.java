@@ -56,7 +56,7 @@ public class SimpleTest {
 	    	 for(int i = 0; i < (int) Integer.parseInt(args[1]); i++){
 	    		 rot[i] = agent.runonce(false);
 	    		 x += rot[i];
-	    		 agent.displaynet();
+	    		 //agent.displaynet();
 	    		 //simulated annealing
 	    		 if(i > 80 ){
 	    			 agent.setepsilon(Double.max(0.01,agent.getepsilon()*0.9));
