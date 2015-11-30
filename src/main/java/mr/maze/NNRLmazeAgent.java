@@ -39,7 +39,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	private MazeProvider mycsprov;
 	private TrainingInputData input;
 	
-	
+	private Point maxc;
 	private BackPropagationTrainer<?> bpt;
 	private MultipleNeuronsOutputError oe;
 	private 		ValuesProvider results;
@@ -49,15 +49,16 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	
 	public NNRLmazeAgent (Maze _m, double epsilon, double gamma, double alpha){
 		super(_m,epsilon,gamma,alpha);
+		maxc = m.getmaxc();
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
-		nnchoice = NNFactory.mlpSigmoid(new int []{40, 41, 4},true);//,new ConnectionCalculatorFullyConnected());
+		nnchoice = NNFactory.mlpSigmoid(new int []{900, 91, 4},true);//,new ConnectionCalculatorFullyConnected());
 		//nnmem = NNFactory.mlpSigmoid(new int []{41, 4},true);
-		mycsprov = new MazeProvider(mypos.getloc());
+		mycsprov = new MazeProvider(maxc);
 		oe = new MultipleNeuronsOutputError();
 		results = TensorFactory.tensorProvider(nnchoice,1, Environment.getInstance().getUseDataSharedMemory());
 		calculatedLayers  = new UniqueList();
-		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0.1f,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
+		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
 	}
 	@Override
 	public void load(Path mazep, Path nnp){
@@ -77,7 +78,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		oe.reset();
 		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
 	    }
-	    input = new MazeData(mypos.getloc());
+	    input = new MazeData(mypos.getloc(), maxc);
 	    //apply the new observation
 		mycsprov.observe(mypos.getloc());
 		calculatedLayers.clear();
@@ -89,12 +90,16 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	}
 	
 	protected float peekchoice(Point loc){
-		
-		input = new MazeData(loc);
-		//create the necessary machinery (is there a more efficient place to create these objects?
+
+	    if (oe != null) {
+		oe.reset();
+		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
+	    }
+	    input = new MazeData(loc, maxc);
+	    //apply the new observation
+		mycsprov.observe(loc);			//notice that we can't handle the eligibility trace with this here
 		calculatedLayers.clear();
 		calculatedLayers.add(nnchoice.getInputLayer());
-		//produce the results 
 		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
 		Matrix peek = results.get(nnchoice.getOutputLayer());
 		float val = peek.get(0,0);

@@ -16,8 +16,8 @@ public class MazeProvider extends TrainingInputProviderImpl {
 	List<float[]> target;
 	Iterator<float[]> targetit;
 	
-	public MazeProvider(Point p){
-		mem = p;
+	public MazeProvider(Point _maxc){
+		maxc = _maxc;
 		targ = new float[4];
 		target = new ArrayList<float[]>();
 		exp = new ArrayList<Point>();
@@ -25,14 +25,13 @@ public class MazeProvider extends TrainingInputProviderImpl {
 		targetit = target.listIterator();
 	}
 	
-	Point mem;
+	Point maxc;
 	List<Point>exp;
 	Iterator<Point> memit;
 	
 	public void observe(Point p){
-		mem = p;
 		exp.add(p);
-		if(exp.size() > 40){
+		if(exp.size() > 2){
 			exp.remove(exp.listIterator().next());
 		}
 	}
@@ -64,10 +63,10 @@ public class MazeProvider extends TrainingInputProviderImpl {
 		if(!memit.hasNext()){
 			memit = exp.listIterator();
 		}
-		return new MazeData(memit.next(), targ);
+		return new MazeData(memit.next(),maxc, targ);
 	}
 	public TrainingInputData getTIDInput(){
-		return new MazeData(mem,targ);
+		return new MazeData(memit.next(),maxc,targ);
 	}
 
 	@Override
