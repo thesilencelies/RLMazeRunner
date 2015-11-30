@@ -1,6 +1,7 @@
 package mr.maze;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
 	}
 	@Override
-	public void load(Path mazep, Path nnp){
+	public void load(Path mazep, Path nnp) throws IOException{
 		m = new Maze(mazep);
 		//functions to load the neural net itself as well
 		//TODO
