@@ -1,19 +1,19 @@
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\MonteCarloUpdater.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\maze\RLMazeAgent.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\RLType.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\maze\NNRLmazeAgent.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\StateActionPair.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\TD0UpdaterSarsa.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\mazeImpl\Action.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\LearningParadigm.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\TDLambdaUpdaterSarsa.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\nnprovider\MazeData.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\TD0UpdaterQ.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\TabularData.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\nnprovider\MazeProvider.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\maze\TabularRLAgent.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\TDLambdaUpdaterQ.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\nnprovider\RLerror.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\tabularProvider\RLUpdater.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\mazeImpl\Position.java
-C:\Users\Stephen Lilico\Documents\Programming\Java\RLMazeRunner\src\main\java\mr\mazeImpl\Maze.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/StateActionPair.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TDLambdaUpdaterSarsa.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/LearningParadigm.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/mazeImpl/Maze.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/NNRLmazeAgent.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TD0UpdaterQ.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TDLambdaUpdaterQ.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/nnprovider/RLerror.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/RLUpdater.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/mazeImpl/Action.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/nnprovider/MazeData.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/MonteCarloUpdater.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/nnprovider/MazeProvider.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/mazeImpl/Position.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TabularData.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/TabularRLAgent.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/RLType.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/RLMazeAgent.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TD0UpdaterSarsa.java

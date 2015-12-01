@@ -13,60 +13,53 @@ public class MazeProvider extends TrainingInputProviderImpl {
 
 	private static final long serialVersionUID = 1L;
 	float [] targ;
-	List<float[]> target;
-	Iterator<float[]> targetit;
 	
 	public MazeProvider(Point _maxc){
 		maxc = _maxc;
 		targ = new float[4];
-		target = new ArrayList<float[]>();
-		exp = new ArrayList<Point>();
-		memit = exp.listIterator();
-		targetit = target.listIterator();
+		mem = new Point(0,0);
+		//we'll have to redesign the iteration and similar later
 	}
 	
-	Point maxc;
-	List<Point>exp;
-	Iterator<Point> memit;
+	Point maxc, mem;
 	
 	public void observe(Point p){
-		exp.add(p);
+		mem = p;
+	/*(	exp.add(p);
 		if(exp.size() > 2){
 			exp.remove(exp.listIterator().next());
-		}
+		}*/
 	}
 	
 	
 	public void clearmem(){
-		//mem = new Point(0,0);
-		exp.clear();
+		mem = new Point(0,0);
+		/*exp.clear();
 		target.clear();
-		reset();
+		reset();*/
 	}
 	
 	public int getInputSize() {
-		return exp.size();
+		return 1;//exp.size();
 	}
 
 	public void reset() {
-		memit = exp.listIterator();
-		targetit = target.listIterator();
+		//memit = exp.listIterator();
+		//targetit = target.listIterator();
 	}
 	public void setTarget(float[] t){
 		targ = t;
-		target.add(t);
+		/*target.add(t);
 		if(target.size() >40){
 			target.remove(target.listIterator().next());
-		}
+		}*/
 	}
 	protected TrainingInputData getNextUnmodifiedInput() {
-		if(!memit.hasNext()){
-			memit = exp.listIterator();
-		}
-		return new MazeData(memit.next(),maxc, targ);
+		
+		return new MazeData(mem,maxc, targ);
 	}
 	public TrainingInputData getTIDInput(){
-		return new MazeData(memit.next(),maxc,targ);
+		return new MazeData(mem,maxc,targ);
 	}
 
 	@Override
@@ -75,10 +68,8 @@ public class MazeProvider extends TrainingInputProviderImpl {
 	}
 	@Override
 	public float[] getNextTarget() {
-		if(!targetit.hasNext()){
-			targetit = target.listIterator();
-		}
-		return targetit.next().clone();
+		
+		return targ.clone();
 	}
 
 }

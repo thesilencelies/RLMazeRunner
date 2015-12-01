@@ -14,20 +14,23 @@ public class SimpleTest {
 	{	
 		RLMazeAgent agent;
 		Maze m;
-		Path mpath = Paths.get("C:/Users/Stephen Lilico/Documents/Programming/Java/RLMazeRunner/maze.mz");
+		Path mpath = Paths.get("/home/stephen/Documents/maze.mz");
+		boolean printmap = false;
 		try{
 		m = new Maze(mpath);
 		}catch(IOException e){
-			m = new Maze(30,30,6,2,false,true);
+			m = new Maze(30,30,6,2,true,true);
 			m.save(mpath);
 		}
 		if (args.length == 0){
 		agent = new NNRLmazeAgent(m,0.1,0.99,0.5);
+		printmap = true;
 		}
 		else {
 			switch(args[0]){
 				case "NN":
 					agent = new NNRLmazeAgent(m,0.1,0.99, 0.5);
+					printmap = true;
 					break;
 				case "TD":
 					agent = new TabularRLAgent(m, 0.6f,RLType.TD0, LearningParadigm.Sarsa, 0.1,0.99);
@@ -56,7 +59,8 @@ public class SimpleTest {
 	    	 for(int i = 0; i < (int) Integer.parseInt(args[1]); i++){
 	    		 rot[i] = agent.runonce(false);
 	    		 x += rot[i];
-	    		 //agent.displaynet();
+	    		 if(printmap)
+	    			 agent.displaynet();
 	    		 //simulated annealing
 	    		 if(i > 80 ){
 	    			 agent.setepsilon(Double.max(0.01,agent.getepsilon()*0.9));
@@ -68,7 +72,7 @@ public class SimpleTest {
 		    double tot = 0;
 		    for (int i = 0, len = rot.length; i < len; i++ ){
 		    	System.out.printf(" %1.2f ", rot[i]);
-		    	if(i > len -10){
+		    	if(i > len -11){
 		    		tot += rot[i];
 		    	}
 		    }

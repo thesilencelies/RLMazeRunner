@@ -1,8 +1,6 @@
-package mr.tabularProvider;
+package mr.mazeImpl;
 
 import java.awt.Point;
-
-import mr.mazeImpl.Action;
 
 public class StateActionPair {
 	public int a,b,c;

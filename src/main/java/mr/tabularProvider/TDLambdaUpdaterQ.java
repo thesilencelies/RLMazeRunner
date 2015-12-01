@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import mr.mazeImpl.Action;
 import mr.mazeImpl.Position;
+import mr.mazeImpl.StateActionPair;
 
 public class TDLambdaUpdaterQ implements RLUpdater{
 	public TDLambdaUpdaterQ(double _alpha, double _gamma, double _lambda){

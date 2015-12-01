@@ -37,7 +37,7 @@ import mr.nnprovider.MazeProvider;
 public class NNRLmazeAgent extends RLMazeAgent{
 	//private NeuralNetworkImpl nnmem;
 	private NeuralNetworkImpl nnchoice;
-	private MazeProvider mycsprov;
+	private MazeProvider mycsprov, testprov;
 	private TrainingInputData input;
 	
 	private Point maxc;
@@ -53,13 +53,16 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		maxc = m.getmaxc();
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
-		nnchoice = NNFactory.mlpSigmoid(new int []{900, 91, 4},true);//,new ConnectionCalculatorFullyConnected());
+		nnchoice = NNFactory.mlpSigmoid(new int []{901, 4},true);//,new ConnectionCalculatorFullyConnected());
 		//nnmem = NNFactory.mlpSigmoid(new int []{41, 4},true);
 		mycsprov = new MazeProvider(maxc);
+		testprov = new MazeProvider(maxc);
 		oe = new MultipleNeuronsOutputError();
 		results = TensorFactory.tensorProvider(nnchoice,1, Environment.getInstance().getUseDataSharedMemory());
 		calculatedLayers  = new UniqueList();
-		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, mycsprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
+		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, testprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
+		//connect the input to the neural network
+	    input = new TrainingInputDataImpl(results.get(nnchoice.getInputLayer()), results.get(oe));
 	}
 	@Override
 	public void load(Path mazep, Path nnp) throws IOException{
@@ -79,9 +82,10 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		oe.reset();
 		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
 	    }
-	    input = new MazeData(mypos.getloc(), maxc);
+	  
 	    //apply the new observation
 		mycsprov.observe(mypos.getloc());
+		mycsprov.populateNext(input);
 		calculatedLayers.clear();
 		calculatedLayers.add(nnchoice.getInputLayer());
 		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
@@ -96,9 +100,9 @@ public class NNRLmazeAgent extends RLMazeAgent{
 		oe.reset();
 		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
 	    }
-	    input = new MazeData(loc, maxc);
 	    //apply the new observation
-		mycsprov.observe(loc);			//notice that we can't handle the eligibility trace with this here
+		testprov.observe(loc);
+		testprov.populateNext(input);
 		calculatedLayers.clear();
 		calculatedLayers.add(nnchoice.getInputLayer());
 		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
