@@ -1,5 +1,4 @@
 mr/mazeImpl/Position.class
-mr/tabularProvider/StateActionPair.class
 mr/mazeImpl/Action.class
 mr/tabularProvider/RLUpdater.class
 mr/nnprovider/MazeData.class
@@ -16,6 +15,9 @@ mr/tabularProvider/LearningParadigm.class
 mr/tabularProvider/TD0UpdaterSarsa.class
 mr/tabularProvider/TDLambdaUpdaterQ.class
 mr/tabularProvider/TDLambdaUpdaterSarsa.class
+mr/nnprovider/MazeLearningProv.class
 mr/mazeImpl/Maze$1.class
+mr/mazeImpl/StateActionPair.class
 mr/maze/TabularRLAgent.class
+mr/mazeImpl/StateExperience.class
 mr/maze/NNRLmazeAgent.class

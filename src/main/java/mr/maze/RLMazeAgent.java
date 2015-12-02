@@ -50,15 +50,17 @@ public abstract class RLMazeAgent {
 	
 	public void displaynet(){
 		//method to visualise the current state of the neural network.
-		double [][] netvals = new double[21][21];
-		for (int i =0; i < 21; i ++){
-			for (int j =0; j < 21; j++){
+		int x = m.getmaxc().x;
+		int y = m.getmaxc().y; 
+		double [][] netvals = new double[x+1][y+1];
+		for (int i =0; i < x; i ++){
+			for (int j =0; j < y; j++){
 				netvals[i][j] = peekchoice(new Point(i,j));
 			}
 		}
-		for (int i =0; i < 21; i++){
-			for(int j = 0; j < 21; j++){
-				System.out.printf(" %1.2f ",netvals[i][j]);
+		for (int i =0; i < x; i++){
+			for(int j = 0; j < y; j++){
+				System.out.printf(" %1.4f ",netvals[i][j]);
 			}
 			System.out.printf("%n");
 		}

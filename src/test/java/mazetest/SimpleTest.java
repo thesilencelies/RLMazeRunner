@@ -19,17 +19,17 @@ public class SimpleTest {
 		try{
 		m = new Maze(mpath);
 		}catch(IOException e){
-			m = new Maze(30,30,6,2,true,true);
+			m = new Maze(10,10,3,1,true,false);
 			m.save(mpath);
 		}
 		if (args.length == 0){
-		agent = new NNRLmazeAgent(m,0.1,0.99,0.5);
+		agent = new NNRLmazeAgent(m,0.1,0.99,0.8);
 		printmap = true;
 		}
 		else {
 			switch(args[0]){
 				case "NN":
-					agent = new NNRLmazeAgent(m,0.1,0.99, 0.5);
+					agent = new NNRLmazeAgent(m,0.1,0.99, 0.8);
 					printmap = true;
 					break;
 				case "TD":

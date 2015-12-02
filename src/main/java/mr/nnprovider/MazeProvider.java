@@ -18,41 +18,27 @@ public class MazeProvider extends TrainingInputProviderImpl {
 		maxc = _maxc;
 		targ = new float[4];
 		mem = new Point(0,0);
-		//we'll have to redesign the iteration and similar later
 	}
 	
 	Point maxc, mem;
 	
 	public void observe(Point p){
 		mem = p;
-	/*(	exp.add(p);
-		if(exp.size() > 2){
-			exp.remove(exp.listIterator().next());
-		}*/
 	}
 	
 	
 	public void clearmem(){
 		mem = new Point(0,0);
-		/*exp.clear();
-		target.clear();
-		reset();*/
 	}
 	
 	public int getInputSize() {
-		return 1;//exp.size();
+		return 1;
 	}
 
 	public void reset() {
-		//memit = exp.listIterator();
-		//targetit = target.listIterator();
 	}
 	public void setTarget(float[] t){
 		targ = t;
-		/*target.add(t);
-		if(target.size() >40){
-			target.remove(target.listIterator().next());
-		}*/
 	}
 	protected TrainingInputData getNextUnmodifiedInput() {
 		

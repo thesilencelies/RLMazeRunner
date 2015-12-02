@@ -3,6 +3,9 @@ package mr.maze;
 import java.awt.Point;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.github.neuralnetworks.architecture.Layer;
@@ -27,7 +30,9 @@ import com.github.neuralnetworks.util.UniqueList;
 import mr.mazeImpl.Action;
 import mr.mazeImpl.Maze;
 import mr.mazeImpl.Position;
+import mr.mazeImpl.StateExperience;
 import mr.nnprovider.MazeData;
+import mr.nnprovider.MazeLearningProv;
 import mr.nnprovider.MazeProvider;
 
 
@@ -37,7 +42,8 @@ import mr.nnprovider.MazeProvider;
 public class NNRLmazeAgent extends RLMazeAgent{
 	//private NeuralNetworkImpl nnmem;
 	private NeuralNetworkImpl nnchoice;
-	private MazeProvider mycsprov, testprov;
+	private MazeLearningProv mycsprov;
+	private MazeProvider testprov;
 	private TrainingInputData input;
 	
 	private Point maxc;
@@ -46,23 +52,33 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	private 		ValuesProvider results;
 	private 	    Set<Layer> calculatedLayers;
 	
-	private float gamma;
+	private List<StateExperience> expreplay, replaybatch;
+	
+	private int maxexplen, batchlen;
 	
 	public NNRLmazeAgent (Maze _m, double epsilon, double gamma, double alpha){
 		super(_m,epsilon,gamma,alpha);
 		maxc = m.getmaxc();
+		
+		maxexplen = 10000;
+	    batchlen = 15;
+		
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
-		nnchoice = NNFactory.mlpSigmoid(new int []{901, 4},true);//,new ConnectionCalculatorFullyConnected());
+		nnchoice = NNFactory.mlpTanh(new int []{401, 4},true,new ConnectionCalculatorFullyConnected());
 		//nnmem = NNFactory.mlpSigmoid(new int []{41, 4},true);
-		mycsprov = new MazeProvider(maxc);
+		mycsprov = new MazeLearningProv(maxc);
 		testprov = new MazeProvider(maxc);
 		oe = new MultipleNeuronsOutputError();
 		results = TensorFactory.tensorProvider(nnchoice,1, Environment.getInstance().getUseDataSharedMemory());
-		calculatedLayers  = new UniqueList();
-		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, testprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.1f, 0.1f, 0.1f, 0.1f, 0, 1, 1, 2);
+		calculatedLayers  = new UniqueList();				//float learningRate, float momentum, float l1weightDecay, float l2weightDecay, float dropoutRate, int trainingBatchSize, int testBatchSize, int epochs
+		bpt = TrainerFactory.backPropagation(nnchoice, mycsprov, testprov, oe, new NNRandomInitializer(new MersenneTwisterRandomInitializer(0,0.1f)), 0.3f, 0.3f, 0f, 0f, 0, batchlen, 1, 5);
 		//connect the input to the neural network
 	    input = new TrainingInputDataImpl(results.get(nnchoice.getInputLayer()), results.get(oe));
+	    expreplay = new ArrayList<StateExperience>();
+	    replaybatch = new ArrayList<StateExperience>();
+	    maxexplen = 10000;
+	    batchlen = 15;
 	}
 	@Override
 	public void load(Path mazep, Path nnp) throws IOException{
@@ -78,35 +94,25 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	}
 	
 	private Matrix rankchoice(){
+		return runNN(mypos.getloc());
+	}
+	private Matrix runNN(Point loc){
 	    if (oe != null) {
 		oe.reset();
 		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
 	    }
-	  
 	    //apply the new observation
-		mycsprov.observe(mypos.getloc());
-		mycsprov.populateNext(input);
+	    testprov.observe(loc);
+	    testprov.populateNext(input);
 		calculatedLayers.clear();
 		calculatedLayers.add(nnchoice.getInputLayer());
 		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
 
 		return  results.get(nnchoice.getOutputLayer());
-
 	}
 	
 	protected float peekchoice(Point loc){
-
-	    if (oe != null) {
-		oe.reset();
-		results.add(oe, results.get(nnchoice.getOutputLayer()).getDimensions());
-	    }
-	    //apply the new observation
-		testprov.observe(loc);
-		testprov.populateNext(input);
-		calculatedLayers.clear();
-		calculatedLayers.add(nnchoice.getInputLayer());
-		nnchoice.getLayerCalculator().calculate(nnchoice, nnchoice.getOutputLayer(), calculatedLayers, results);
-		Matrix peek = results.get(nnchoice.getOutputLayer());
+		Matrix peek = runNN(loc);
 		float val = peek.get(0,0);
 		for (float v : peek.getElements()){
 			if(v > val){
@@ -114,6 +120,59 @@ public class NNRLmazeAgent extends RLMazeAgent{
 			}
 		}
 		return val;
+	}
+	protected float experience(Action choice){
+		//moves the position, then stores the results in expreplay, then prepares a random batch from experience
+		//create the random batch
+		if(expreplay.size() < batchlen){
+			replaybatch = new ArrayList<StateExperience>(expreplay);
+		}
+		else{
+			replaybatch.clear();
+		//select batchlen members from expreplay with equal probability
+			double batchleft = batchlen;
+			for(int i = 0, len = expreplay.size(); i < len;i++){
+				double prob = batchleft/(len-i);
+				StateExperience se = expreplay.get(i);
+				if(Math.abs(se.reward) > 0.5) prob = 10*prob;
+				if(Math.random() < prob){
+					replaybatch.add(se);
+					batchleft--;
+					if(batchleft < 1){
+						break;
+					}
+				}
+			}
+		}
+		//add the new experience
+		Point spos = new Point(mypos.getloc());
+		float reward = mypos.go(choice,m);
+		Point epos = new Point(mypos.getloc());
+		StateExperience s = new StateExperience(spos,epos,reward,choice);
+		expreplay.add(s);
+		if(expreplay.size() > maxexplen){
+			expreplay.remove(0);
+		}
+		//always include the most recent experience in the batch.
+		replaybatch.add(s);
+		return reward;
+	}
+	protected void settargets(){
+		//sets the target values for each of the points in replaybatch
+		Iterator<StateExperience> it = replaybatch.iterator();
+		while(it.hasNext()){
+			StateExperience i = it.next();
+			float [] target = runNN(i.startstate).getElements();
+			float val = 0;
+			//clamp terminal states to their reward
+			if(!m.isTermPos(i.endstate)){
+				val = peekchoice(i.endstate);
+			}
+			target[i.act.ind] = target[i.act.ind] + (float)(alpha*((i.reward + gamma*val) - target[i.act.ind]));
+			i.target = target;
+		}
+		//apply this list to the provider
+		mycsprov.SetReplayBatch(replaybatch);
 	}
 
 	public float runonce(boolean talkback){
@@ -145,6 +204,9 @@ public class NNRLmazeAgent extends RLMazeAgent{
 						a = Action.RIGHT;
 					}
 				}
+				if(talkback){
+					 System.out.println ("at location " + mypos.getloc() + " action chosen was " + a + " randomly");
+				}
 			}
 			else{
 				float[] weights = mat.getElements();
@@ -155,33 +217,23 @@ public class NNRLmazeAgent extends RLMazeAgent{
 						a = act;
 					}
 				}
+				if(talkback){
+					 System.out.println ("at location " + mypos.getloc() + " action chosen was " + a + " with value " + maxval);
+				}
 			}
 			//take the action
-			if(talkback){
-				 System.out.println ("at location " + mypos.getloc() + " action chosen was " + a);
-			}
+
 			
-			reward = mypos.go(a,m);
+			reward = experience(a);
 			totalReward = totalReward + reward;
 			if (talkback) {
 				System.out.println("arriving to "+ mypos.getloc() + " with reward " + reward);
 			}
 			//assess new state and update previous
-			float [] target = mat.getElements();
-			float val = 0;
-			//clamp terminal states to their reward
-			if(!m.isTermPos(mypos.getloc())){
-				val = peekchoice(mypos.getloc());
-				
-				if(talkback){
-					System.out.println("the new max Q value is " + val);
-				}
-			}
-			target[a.ind] = target[a.ind] + (float)(alpha*(reward + gamma*val) - target[a.ind]);
-			mycsprov.setTarget(target);
+			settargets();
 			bpt.train();
 		}
-		
+		//experiences are retained between episodes
 			System.out.println("reward was " + totalReward + " after " + steps + " steps");
 		return totalReward;
 	}
