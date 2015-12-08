@@ -26,6 +26,13 @@
   		<scope>system</scope>
   		<systemPath>/home/stephen/4yp/Aparapi_2013_01_23_linux_x86_64/aparapi.jar</systemPath>
   	</dependency>
+  	<dependency>
+  		<groupId>com.panayotis.gnuplot</groupId>
+  		<artifactId>JavaPlot</artifactId>
+  		<scope>system</scope>
+  		<systemPath>/home/stephen/workspace/Maze_Runner/JavaPlot/dist/JavaPlot.jar</systemPath>
+  		<version>0.5.0</version>
+  	</dependency>
   </dependencies>
     <build>
     <plugins>

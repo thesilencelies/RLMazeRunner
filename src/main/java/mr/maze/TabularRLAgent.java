@@ -73,7 +73,7 @@ public class TabularRLAgent extends RLMazeAgent{
 		}
 		return rval;
 	}
-
+	
 	private Action epsilonGreedyAction(){
 		Action a = Action.UP;	//default value
 		//choose greedily with probability 1-e
@@ -149,6 +149,7 @@ public class TabularRLAgent extends RLMazeAgent{
 				reward = -2;
 				break;
 			}
+			plotter.observe(data.Q, reward);
 		}
 		data = upd.episodeEndUpdate(data, totalReward);
 		System.out.println("reward was " + totalReward + " after " + steps + " steps");
@@ -187,10 +188,12 @@ public class TabularRLAgent extends RLMazeAgent{
 					reward = -2;
 					break;
 				}
+				plotter.observe(data.Q, reward);
 			}
 		data = upd.episodeEndUpdate(data, totalReward);
 		System.out.println("reward was " + totalReward + " after " + steps + " steps");
 		return totalReward;
 	}
 
+		
 }

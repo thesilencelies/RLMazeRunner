@@ -15,9 +15,9 @@ public class Maze {
 	private boolean warpwalls;
 	private boolean penlife;
 	private Point maxc;
-	private Point goal;
-	private List<Point> pits;
-	private List<Point> walls;
+	protected Point goal;
+	protected List<Point> pits;
+	protected List<Point> walls;
 	
 	
 	public Maze(int dimx, int dimy, int npits, int nwalls, boolean _warpwalls, boolean penaliselife){	//these must not be larger than 255

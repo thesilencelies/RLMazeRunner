@@ -76,10 +76,11 @@ public class SimpleTest {
 		    		tot += rot[i];
 		    	}
 		    }
-		    System.out.printf("%n average result from the last 10 run throughs");
 		    int div = (rot.length > 10)? 10 : rot.length;
+		    System.out.printf("%n average result from the last %d run throughs", div);
 		    System.out.printf(" %1.4f ", tot/div);
 	    }
+	     agent.plotlearning();
 
 	}
 

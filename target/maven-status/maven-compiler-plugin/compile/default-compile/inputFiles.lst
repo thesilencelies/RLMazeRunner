@@ -17,5 +17,7 @@
 /home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TabularData.java
 /home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/TabularRLAgent.java
 /home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/RLType.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/LearningGrapher.java
 /home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/maze/RLMazeAgent.java
+/home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/mazeImpl/SimpleMaze.java
 /home/stephen/workspace/Maze_Runner/RLMazeRunner/src/main/java/mr/tabularProvider/TD0UpdaterSarsa.java
