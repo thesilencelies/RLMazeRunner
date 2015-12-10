@@ -19,7 +19,7 @@ public class SimpleTest {
 		try{
 		m = new Maze(mpath);
 		}catch(IOException e){
-			m = new Maze(10,10,3,1,false,true);
+			m = new Maze(10,10,3,1,true,true);
 			m.save(mpath);
 		}
 		if (args.length == 0){

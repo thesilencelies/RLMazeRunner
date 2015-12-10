@@ -69,7 +69,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 
 		//multilayer perceptron for the final decision for now
 		//base and final layers are fixed by the size of the maze and number of outputs
-		nnchoice = NNFactory.mlpSigmoid(new int []{(m.getmaxc().x+1)*(m.getmaxc().y+1)+2, 4},true);
+		nnchoice = NNFactory.mlpSigmoid(new int []{(m.getmaxc().x+1)*(m.getmaxc().y+1),m.getnpits()+m.getnwalls()+4, 4},true);
 		mycsprov = new MazeLearningProv(maxc);
 		testprov = new MazeProvider(maxc);
 		oe = new MultipleNeuronsOutputError();
@@ -119,7 +119,7 @@ public class NNRLmazeAgent extends RLMazeAgent{
 	
 	private Matrix rankchoice(){
 		//use the remembered network for decision making
-		return runNN(mypos.getloc());
+		return runNNmem(mypos.getloc());
 	}
 	private Matrix runNN(Point loc){
 		 if (oe != null) {

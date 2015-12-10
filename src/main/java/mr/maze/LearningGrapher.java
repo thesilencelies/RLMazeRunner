@@ -10,6 +10,8 @@ import com.panayotis.gnuplot.plot.DataSetPlot;
 import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Style;
 
+import nntools.ArrayManipulator;
+
 public class LearningGrapher {
 	private List<float[][][]> Qvals;
 	private List<Double> rewards;
@@ -19,9 +21,10 @@ public class LearningGrapher {
 		rewards = new ArrayList<Double>();
 	}
 	public void observe(float[][][] Q, double r){
-		Qvals.add(Q.clone());
+		Qvals.add( ArrayManipulator.deepCloneArray(Q));
 		rewards.add(r);
 	}
+	
 	public void reset(){
 		Qvals.clear();
 	}
@@ -51,16 +54,16 @@ public class LearningGrapher {
 		double[][] rplot = new double[rewards.size()][2];
 		double totr =0;
 		for(int n = 0, lr = rewards.size(); n < lr; n++){
-		//average taken over the last 10 episodes
+		//average taken over the last 300 steps
 			totr += rewards.get(n);
-			/*double div; taking the average over them all for nwo
-			if(n > 99){
-				div = 100;
-				totr -= rewards.get(n-100);
+			double div; 
+			if(n > 299){
+				div = 300;
+				totr -= rewards.get(n-300);
 			}
 			else{
 				div = n;
-			}*/
+			}
 			rplot[n] = new double[]{n,totr/n};
 		}
 		

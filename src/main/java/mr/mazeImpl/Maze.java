@@ -203,4 +203,10 @@ public class Maze {
 	public Point getmaxc (){
 		return new Point(maxc);
 	}
+	public int getnpits(){
+		return pits.size();
+	}
+	public int getnwalls(){
+		return walls.size();
+	}
 }
