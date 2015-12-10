@@ -15,7 +15,7 @@ public class NNSimpleTest {
 	{	
 		RLMazeAgent agent;
 		Maze m = new SimpleMaze();
-		agent = new NNRLmazeAgent(m,new int[]{8,4},0.1,0.99,0.7);
+		agent = new NNRLmazeAgent(m,new int[]{6,4},0.1,0.99,0.4);
 	//	agent.setGroundTruth(new float[][][]{{{1.479f,1.463f,1.463f,-0.5f},{1.479f, 1.463f,1.479f,1.495f}},{{1.495f,-0.5f,1.463f,-0.5f},{1.495f,-0.5f,1.479f,1.495f}}}); //from empyrical data
 	     agent.runonce(true);
 	     //agent.displaynet();

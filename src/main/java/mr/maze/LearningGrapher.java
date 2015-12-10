@@ -53,15 +53,15 @@ public class LearningGrapher {
 		for(int n = 0, lr = rewards.size(); n < lr; n++){
 		//average taken over the last 10 episodes
 			totr += rewards.get(n);
-			double div;
-			if(n > 9){
-				div = 10;
-				totr -= rewards.get(n-10);
+			/*double div; taking the average over them all for nwo
+			if(n > 99){
+				div = 100;
+				totr -= rewards.get(n-100);
 			}
 			else{
 				div = n;
-			}
-			rplot[n] = new double[]{n,totr/div};
+			}*/
+			rplot[n] = new double[]{n,totr/n};
 		}
 		
 		JavaPlot p = new JavaPlot();
